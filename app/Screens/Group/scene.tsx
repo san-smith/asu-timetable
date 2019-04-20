@@ -1,34 +1,31 @@
 import React, {Component} from 'react'
 import {Text, View, TouchableOpacity, FlatList } from 'react-native'
-import fetchFaculty from 'Api/fetchFaculty'
-import parseFaculty from 'Utils/parseFaculty'
+import fetchGroups from 'Api/fetchGroups'
+import parseGroup from 'Utils/parseGroup'
 import styles from './styles'
 import { NavigationScreenProp } from 'react-navigation'
+import { Group } from 'Types/group'
 
-export interface Faculty {
-  name: string,
-  url: string,
-}
-
-interface FacultyProps {
+interface GroupProps {
   navigation: NavigationScreenProp<any>,
 }
 
-interface FacultyState {
-  faculties: Array<Faculty> | null,
+interface GroupState {
+  groups: Array<Group> | null,
 }
 
-class FacultyScreen extends Component<FacultyProps, FacultyState> {
-  constructor(props: FacultyProps) {
+class GroupScreen extends Component<GroupProps, GroupState> {
+  constructor(props: GroupProps) {
     super(props)
     this.state = {
-      faculties: null,
+      groups: null,
     }
   }
 
   componentDidMount() {
-    fetchFaculty()
-    .then(data => this.setState({ faculties: parseFaculty(data) }))
+    const url = this.props.navigation.getParam('url')
+    fetchGroups(url)
+    .then(data => this.setState({ groups: parseGroup(data) }))
   }
 
   goBack = () => {
@@ -38,13 +35,13 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Faculty</Text>
+        <Text style={styles.welcome}>Группы</Text>
         <TouchableOpacity onPress={this.goBack} >
           <Text>BACK</Text>
         </TouchableOpacity>
 
         <FlatList
-          data={this.state.faculties || []}
+          data={this.state.groups || []}
           contentContainerStyle={styles.content}
           renderItem={(item) => this.renderItem(item.item)}
           keyExtractor={this.keyExtractor}
@@ -54,7 +51,7 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
     );
   }
 
-  renderItem = (item: Faculty) => (
+  renderItem = (item: Group) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>{item.name}</Text>
     </View>
@@ -66,7 +63,7 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
     </View>
   )
 
-  keyExtractor = (item: Faculty) => item.url
+  keyExtractor = (item: Group) => item.url
 }
 
-export default FacultyScreen
+export default GroupScreen

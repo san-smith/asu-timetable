@@ -11,6 +11,7 @@
 import { createStackNavigator, createAppContainer } from "react-navigation"
 import Home from 'Screens/Home'
 import Faculty from 'Screens/Faculty'
+import Group from 'Screens/Group'
 
 const AppNavigator = createStackNavigator(
   {
@@ -19,6 +20,9 @@ const AppNavigator = createStackNavigator(
     },
     Faculty: {
       screen: Faculty,
+    },
+    Group: {
+      screen: Group,
     }
   },
   {
