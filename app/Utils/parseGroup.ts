@@ -16,7 +16,6 @@ export default function parseGroup(html: string): Array<Group> {
     ))
   const names = compact(compact(arr.map((tag: any) => values(pick(values(tag.childNodes)[1], ['childNodes']).childNodes)[0]))
       .map((tag: any) => trim(pick(tag, 'data').data)))
-  console.log(names, urls)
   return names.map((name: string, index: number) => ({
       name,
       url: urls[index],
