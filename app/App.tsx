@@ -11,7 +11,8 @@
 import { createStackNavigator, createAppContainer } from "react-navigation"
 import Home from 'Screens/Home'
 import Faculty from 'Screens/Faculty'
-import Group from 'Screens/Group'
+import Groups from 'Screens/Groups'
+import TimeTable from 'Screens/TimeTable'
 
 const AppNavigator = createStackNavigator(
   {
@@ -21,9 +22,12 @@ const AppNavigator = createStackNavigator(
     Faculty: {
       screen: Faculty,
     },
-    Group: {
-      screen: Group,
-    }
+    Groups: {
+      screen: Groups,
+    },
+    TimeTable: {
+      screen: TimeTable,
+    },
   },
   {
     initialRouteName: 'Home',

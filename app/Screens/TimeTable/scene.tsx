@@ -1,31 +1,37 @@
 import React, {Component} from 'react'
 import {Text, View, TouchableOpacity, FlatList } from 'react-native'
-import fetchGroups from 'Api/fetchGroups'
-import parseGroup from 'Utils/parseGroup'
 import styles from './styles'
 import { NavigationScreenProp } from 'react-navigation'
 import { Group } from 'Types/group'
+import fetchTimeTable from 'Api/fetchTimeTable'
 
-interface GroupProps {
+interface TimeTableProps {
   navigation: NavigationScreenProp<any>,
 }
 
-interface GroupState {
-  groups: Array<Group> | null,
+interface TimeTableState {
+  timeTable: string | null,
 }
 
-class GroupScreen extends Component<GroupProps, GroupState> {
-  constructor(props: GroupProps) {
+class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
+  constructor(props: TimeTableProps) {
     super(props)
     this.state = {
-      groups: null,
+      timeTable: null,
     }
   }
 
-  componentDidMount() {
-    const url = this.props.navigation.getParam('url')
-    fetchGroups(url)
-    .then(data => this.setState({ groups: parseGroup(data) }))
+  async componentDidMount() {
+    try {
+      const facultyUrl = this.props.navigation.getParam('facultyUrl')
+      const groupUrl = this.props.navigation.getParam('groupUrl')
+      const timeTable = await fetchTimeTable(facultyUrl, groupUrl)
+      this.setState({timeTable})
+      console.log(timeTable)
+    } catch (e) {
+      console.error(e)
+    }
+    
   }
 
   goBack = () => {
@@ -39,22 +45,23 @@ class GroupScreen extends Component<GroupProps, GroupState> {
         <TouchableOpacity onPress={this.goBack} >
           <Text>BACK</Text>
         </TouchableOpacity>
+        <Text>{this.state.timeTable}</Text>
 
-        <FlatList
+        {/* <FlatList
           data={this.state.groups || []}
           contentContainerStyle={styles.content}
           renderItem={(item) => this.renderItem(item.item)}
           keyExtractor={this.keyExtractor}
           ListEmptyComponent={this.renderEmpty()}
-        />
+        /> */}
       </View>
     );
   }
 
   renderItem = (item: Group) => (
-    <View style={styles.item}>
+    <TouchableOpacity style={styles.item}>
       <Text style={styles.itemText}>{item.name}</Text>
-    </View>
+    </TouchableOpacity>
   )
 
   renderEmpty = () => (
@@ -66,4 +73,4 @@ class GroupScreen extends Component<GroupProps, GroupState> {
   keyExtractor = (item: Group) => item.url
 }
 
-export default GroupScreen
+export default TimeTableScreen

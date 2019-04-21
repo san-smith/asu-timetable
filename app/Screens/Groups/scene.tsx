@@ -1,50 +1,52 @@
 import React, {Component} from 'react'
 import {Text, View, TouchableOpacity, FlatList } from 'react-native'
-import fetchFaculty from 'Api/fetchFaculties'
-import parseFaculty from 'Utils/parseFaculty'
+import fetchGroups from 'Api/fetchGroups'
+import parseGroup from 'Utils/parseGroup'
 import styles from './styles'
 import { NavigationScreenProp } from 'react-navigation'
-import { Faculty } from 'Types/faculty'
+import { Group } from 'Types/group'
 
-interface FacultyProps {
+interface GroupsProps {
   navigation: NavigationScreenProp<any>,
 }
 
-interface FacultyState {
-  faculties: Array<Faculty> | null,
+interface GroupsState {
+  groups: Array<Group> | null,
 }
 
-class FacultyScreen extends Component<FacultyProps, FacultyState> {
-  constructor(props: FacultyProps) {
+class GroupsScreen extends Component<GroupsProps, GroupsState> {
+  constructor(props: GroupsProps) {
     super(props)
     this.state = {
-      faculties: null,
+      groups: null,
     }
   }
 
   componentDidMount() {
-    fetchFaculty()
-    .then(data => this.setState({ faculties: parseFaculty(data) }))
+    const url = this.props.navigation.getParam('url')
+    fetchGroups(url)
+    .then(data => this.setState({ groups: parseGroup(data) }))
   }
 
   goBack = () => {
     this.props.navigation.goBack()
   }
 
-  goToGroups = (url: string) => {
-    this.props.navigation.navigate('Groups', {url})
+  goToTimeTable = (groupUrl: string) => {
+    const facultyUrl = this.props.navigation.getParam('url')
+    this.props.navigation.navigate('TimeTable', {facultyUrl, groupUrl})
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Faculty</Text>
+        <Text style={styles.welcome}>Группы</Text>
         <TouchableOpacity onPress={this.goBack} >
           <Text>BACK</Text>
         </TouchableOpacity>
 
         <FlatList
-          data={this.state.faculties || []}
+          data={this.state.groups || []}
           contentContainerStyle={styles.content}
           renderItem={(item) => this.renderItem(item.item)}
           keyExtractor={this.keyExtractor}
@@ -54,9 +56,9 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
     );
   }
 
-  renderItem = (item: Faculty) => (
+  renderItem = (item: Group) => (
     <TouchableOpacity style={styles.item}
-      onPress={() => this.goToGroups(item.url)}>
+    onPress={() => this.goToTimeTable(item.url)}>
       <Text style={styles.itemText}>{item.name}</Text>
     </TouchableOpacity>
   )
@@ -67,7 +69,7 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
     </View>
   )
 
-  keyExtractor = (item: Faculty) => item.url
+  keyExtractor = (item: Group) => item.url
 }
 
-export default FacultyScreen
+export default GroupsScreen
