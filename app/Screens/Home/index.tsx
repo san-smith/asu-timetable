@@ -1,14 +1,10 @@
 import React, {Component} from 'react'
-import {Platform, Text, View, TouchableOpacity} from 'react-native'
-import styles from './styles'
+import {Text, View, TouchableOpacity, ScrollView} from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
+import DatePanel from 'Components/DatePanel'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import styles from './styles'
+import StudentsButton from './components/StudentsButton'
 
 interface HomeProps {
   navigation: NavigationScreenProp<any>,
@@ -21,15 +17,14 @@ class Home extends Component<HomeProps> {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To getcbvbc started, edit App.tsx</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-        <TouchableOpacity onPress={this.goToFaculty}
-        style={styles.button}>
-          <Text>Go to next screen</Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}>
+        <DatePanel />
+        <StudentsButton onPress={this.goToFaculty}
+        />
+      </ScrollView>
     );
   }
 }

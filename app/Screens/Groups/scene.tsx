@@ -1,10 +1,14 @@
 import React, {Component} from 'react'
-import {Text, View, TouchableOpacity, FlatList } from 'react-native'
+import {Text, View, Alert, FlatList } from 'react-native'
 import fetchGroups from 'Api/fetchGroups'
 import parseGroup from 'Utils/parseGroup'
 import styles from './styles'
 import { NavigationScreenProp } from 'react-navigation'
 import { Group } from 'Types/group'
+import Header from 'Components/Header'
+import ListItem from 'Components/ListItem'
+import Loader from 'Components/Loader'
+import Search from 'Components/Search'
 
 interface GroupsProps {
   navigation: NavigationScreenProp<any>,
@@ -12,6 +16,8 @@ interface GroupsProps {
 
 interface GroupsState {
   groups: Array<Group> | null,
+  inProgress: boolean,
+  search: string,
 }
 
 class GroupsScreen extends Component<GroupsProps, GroupsState> {
@@ -19,17 +25,22 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
     super(props)
     this.state = {
       groups: null,
+      inProgress: false,
+      search: '',
     }
   }
 
-  componentDidMount() {
-    const url = this.props.navigation.getParam('url')
-    fetchGroups(url)
-    .then(data => this.setState({ groups: parseGroup(data) }))
-  }
-
-  goBack = () => {
-    this.props.navigation.goBack()
+  async componentDidMount() {
+    try {
+      const url = this.props.navigation.getParam('url')
+      this.setState({inProgress: true})
+      const groups = await fetchGroups(url)
+      this.setState({ groups: parseGroup(groups) })
+    } catch (e) {
+      Alert.alert('Ошибка', e.message)
+    } finally {
+      this.setState({inProgress: false})
+    }    
   }
 
   goToTimeTable = (groupUrl: string) => {
@@ -37,30 +48,41 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
     this.props.navigation.navigate('TimeTable', {facultyUrl, groupUrl})
   }
 
+  onSearch = (search: string) => {
+    this.setState({search})
+  }
+
+  getGroups(): Array<Group> {
+    const {search, groups} = this.state
+    if (!groups) return []
+    return groups.filter(group => group.name.includes(search))
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Группы</Text>
-        <TouchableOpacity onPress={this.goBack} >
-          <Text>BACK</Text>
-        </TouchableOpacity>
+        <Header navigation={this.props.navigation}
+        title='Группы' />
+        <Search onTextChange={this.onSearch} />
 
-        <FlatList
-          data={this.state.groups || []}
-          contentContainerStyle={styles.content}
-          renderItem={(item) => this.renderItem(item.item)}
-          keyExtractor={this.keyExtractor}
-          ListEmptyComponent={this.renderEmpty()}
-        />
+        {this.state.inProgress
+          ? <Loader />
+          : <FlatList
+            data={this.getGroups()}
+            contentContainerStyle={styles.content}
+            renderItem={(item) => this.renderItem(item.item)}
+            keyExtractor={this.keyExtractor}
+            ListEmptyComponent={this.renderEmpty()}
+          />}
+        
       </View>
     );
   }
 
   renderItem = (item: Group) => (
-    <TouchableOpacity style={styles.item}
-    onPress={() => this.goToTimeTable(item.url)}>
-      <Text style={styles.itemText}>{item.name}</Text>
-    </TouchableOpacity>
+    <ListItem
+      onPress={() => this.goToTimeTable(item.url)}
+      title={item.name} />
   )
 
   renderEmpty = () => (

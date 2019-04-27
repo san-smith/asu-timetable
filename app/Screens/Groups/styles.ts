@@ -8,11 +8,6 @@ export default StyleSheet.create({
   content: {
     flexGrow: 1,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
   item: {
     paddingHorizontal: 5,
     paddingVertical: 10,

@@ -1,11 +1,14 @@
-import {Platform, StyleSheet, Text, View} from 'react-native'
+import {StyleSheet} from 'react-native'
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  content: {
+    flexGrow: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
   },
   welcome: {
     fontSize: 20,
@@ -20,7 +23,6 @@ export default StyleSheet.create({
   button: {
     backgroundColor: '#6699FF',
     padding: 5,
-    margin: 5,
     borderRadius: 3,
   }
 });
