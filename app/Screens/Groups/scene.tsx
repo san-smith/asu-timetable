@@ -32,7 +32,7 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
 
   async componentDidMount() {
     try {
-      const url = this.props.navigation.getParam('url')
+      const url = this.props.navigation.getParam('groupUrl')
       this.setState({inProgress: true})
       const groups = await fetchGroups(url)
       this.setState({ groups: parseGroup(groups) })
@@ -44,8 +44,13 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
   }
 
   goToTimeTable = (groupUrl: string) => {
-    const facultyUrl = this.props.navigation.getParam('url')
+    const facultyUrl = this.props.navigation.getParam('groupUrl')
     this.props.navigation.navigate('TimeTable', {facultyUrl, groupUrl})
+  }
+
+  goToLecturers = (departmentUrl: string) => {
+    const facultyUrl = this.props.navigation.getParam('groupUrl')
+    this.props.navigation.navigate('Lecturers', {facultyUrl, departmentUrl})
   }
 
   onSearch = (search: string) => {
@@ -62,7 +67,7 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
     return (
       <View style={styles.container}>
         <Header navigation={this.props.navigation}
-        title='Группы' />
+        title={ this.props.navigation.getParam('groupUrl').indexOf('students') !== -1 ? 'Группы' : 'Кафедры' } />
         <Search onTextChange={this.onSearch} />
 
         {this.state.inProgress
@@ -81,7 +86,7 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
 
   renderItem = (item: Group) => (
     <ListItem
-      onPress={() => this.goToTimeTable(item.url)}
+      onPress={() => this.props.navigation.getParam('groupUrl').indexOf('students') !== -1 ? this.goToTimeTable(item.url) : this.goToLecturers(item.url)}
       title={item.name} />
   )
 

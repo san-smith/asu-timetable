@@ -21,25 +21,5 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  header: {
-    height: 30,
-    backgroundColor: 'rgba(14, 101, 191, 0.8)',
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(14, 101, 191, 1)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    color: 'white',
-    fontWeight: '300',
-    fontSize: 15,
-  },
-  separator: {
-    marginBottom: 5,
-  },
-  currentItem: {
-    fontWeight: "bold",
-    fontSize: 20,
-    backgroundColor: '#d7fce1'
-  }
+  
 });
