@@ -31,6 +31,11 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
       inProgress: false,
     }
   }
+  isCurrentDate (date:string): boolean {
+      var currentDate = moment().format('dddd, DD.MM.YYYY');
+      var data = moment(date)
+      return (currentDate === data.format('dddd, DD.MM.YYYY'));
+  }
 
   async componentDidMount() {
     try {
@@ -78,11 +83,14 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
     );
   }
 
-  renderItem = (item: CalendarEvent) => (
+  renderItem = (item: CalendarEvent) => { 
+    const date = item.startDate
+    return (
     <TouchableOpacity style={styles.item}>
       <Text style={styles.itemText}>{item.summary}</Text>
     </TouchableOpacity>
   )
+  }
 
   renderEmpty = () => (
     <View style={styles.emptyList}>
@@ -94,8 +102,9 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
     const date = moment(title)
     date.locale('ru')
     return (
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>{date.format('dddd, DD.MM.YYYY')}</Text>
+      <View style={[styles.header, this.isCurrentDate(date.toString()) && styles.headerIsCurrentDate]}>
+
+        <Text style={[styles.headerTitle, this.isCurrentDate(date.toString()) && styles.currentDate]}>{date.format('dddd, DD.MM.YYYY')}</Text>
       </View>
     )
   }
