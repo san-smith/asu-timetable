@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Text, View, Alert, FlatList } from 'react-native'
+import {Text, View, Alert, FlatList, AsyncStorage } from 'react-native'
 import fetchGroups from 'Api/fetchGroups'
 import parseGroup from 'Utils/parseGroup'
 import styles from './styles'
@@ -7,8 +7,10 @@ import { NavigationScreenProp } from 'react-navigation'
 import { Group } from 'Types/group'
 import Header from 'Components/Header'
 import ListItem from 'Components/ListItem'
+import ListItemWithFavorite from 'Components/ListItemWithFavorite'
 import Loader from 'Components/Loader'
 import Search from 'Components/Search'
+import { Favorite } from 'Types/favorite';
 
 interface GroupsProps {
   navigation: NavigationScreenProp<any>,
@@ -85,9 +87,24 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
   }
 
   renderItem = (item: Group) => (
-    <ListItem
-      onPress={() => this.props.navigation.getParam('groupUrl').indexOf('students') !== -1 ? this.goToTimeTable(item.url) : this.goToLecturers(item.url)}
-      title={item.name} />
+    this.props.navigation.getParam('groupUrl').indexOf('students') === -1
+    ? <ListItem
+        onPress={() => this.props.navigation.getParam('groupUrl').indexOf('students') !== -1 ? this.goToTimeTable(item.url) : this.goToLecturers(item.url)}
+        title={item.name} />
+    : <ListItemWithFavorite
+    onPress={() => this.props.navigation.getParam('groupUrl').indexOf('students') !== -1 ? this.goToTimeTable(item.url) : this.goToLecturers(item.url)}
+    onPressFavorite={async () => {
+      const favoriteStore: Favorite[] = JSON.parse(await AsyncStorage.getItem(`FavoriteStore`) || '[]');
+      if (favoriteStore.find(x => x.favoriteName === item.name) === undefined) {
+        favoriteStore.push({
+          facultyUrl: this.props.navigation.getParam('groupUrl'),
+          groupUrl: item.url,
+          favoriteName: item.name,
+        });
+        await AsyncStorage.setItem(`FavoriteStore`, JSON.stringify(favoriteStore));
+      }
+    }}
+    title={item.name} />
   )
 
   renderEmpty = () => (

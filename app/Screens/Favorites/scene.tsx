@@ -4,7 +4,7 @@ import styles from './styles'
 import { NavigationScreenProp } from 'react-navigation'
 import { Favorite } from 'Types/favorite'
 import Header from 'Components/Header'
-import ListItem from 'Components/ListItem'
+import ListItemWithFavorite from 'Components/ListItemWithFavorite'
 import Loader from 'Components/Loader'
 import Search from 'Components/Search'
 
@@ -76,9 +76,14 @@ class FavoritesScreen extends Component<FavoritesProps, FavoritesState> {
   }
 
   renderItem = (item: Favorite) => (
-    <ListItem
+    <ListItemWithFavorite
       onPress={() => this.goToTimeTable(item.facultyUrl, item.groupUrl)}
-      title={item.favoriteName} />
+      title={item.favoriteName}
+      onPressFavorite={async () => {
+        const favoriteStore: Favorite[] = JSON.parse(await AsyncStorage.getItem(`FavoriteStore`) || '[]');
+        favoriteStore.splice(favoriteStore.findIndex(x => x.favoriteName === item.favoriteName), 1);
+        await AsyncStorage.setItem(`FavoriteStore`, JSON.stringify(favoriteStore));
+      }} />
   )
 
   renderEmpty = () => (
