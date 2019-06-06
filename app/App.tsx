@@ -14,6 +14,7 @@ import Faculty from 'Screens/Faculty'
 import Groups from 'Screens/Groups'
 import Lecturers from 'Screens/Lecturers'
 import TimeTable from 'Screens/TimeTable'
+import Favorites from 'Screens/Favorites'
 
 const AppNavigator = createStackNavigator(
   {
@@ -31,6 +32,9 @@ const AppNavigator = createStackNavigator(
     },
     TimeTable: {
       screen: TimeTable,
+    },
+    Favorites: {
+      screen: Favorites,
     },
   },
   {
