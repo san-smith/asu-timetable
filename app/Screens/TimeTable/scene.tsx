@@ -38,7 +38,6 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
       const facultyUrl = this.props.navigation.getParam('facultyUrl')
       const groupUrl = this.props.navigation.getParam('groupUrl')
       const data = await fetchTimeTable(facultyUrl, groupUrl)
-      console.log('data', data)
       const parsed = parseTimeTable(data)
       const timeTable = parsed.events.map((event: any) => normalizeCalendarEvent(event))
       this.setState({timeTable})
@@ -80,7 +79,7 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
   }
   checkCurrentTime(summary: string, startDate: string): boolean {
     const currentTime = Date.now();
-    const startTime = (new Date(`${startDate}T${summary.split(' ')[0]}Z`)).getTime() + (new Date()).getTimezoneOffset()*60000;
+    const startTime = (new Date(`${startDate}T${summary.split('-')[0]}Z`)).getTime() + (new Date()).getTimezoneOffset()*60000;
     return currentTime > startTime && currentTime < startTime + 90 * 60 * 1000;
   }
   renderItem = (item: CalendarEvent) => (
