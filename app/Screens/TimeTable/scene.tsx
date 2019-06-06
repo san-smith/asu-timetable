@@ -83,14 +83,19 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
     );
   }
 
-  renderItem = (item: CalendarEvent) => { 
-    const date = item.startDate
-    return (
+
+  checkCurrentTime(summary: string, startDate: string): boolean {
+    const currentTime = Date.now();
+    const startTime = (new Date(`${startDate}T${summary.split('-')[0]}Z`)).getTime() + (new Date()).getTimezoneOffset()*60000;
+    return currentTime > startTime && currentTime < startTime + 90 * 60 * 1000;
+  }
+  
+  renderItem = (item: CalendarEvent) => (
     <TouchableOpacity style={styles.item}>
-      <Text style={styles.itemText}>{item.summary}</Text>
+      <Text style={[styles.itemText, this.checkCurrentTime(item.summary, item.startDate) && styles.currentItem]}>{item.summary}</Text>
     </TouchableOpacity>
   )
-  }
+  
 
   renderEmpty = () => (
     <View style={styles.emptyList}>

@@ -12,7 +12,9 @@ import { createStackNavigator, createAppContainer } from "react-navigation"
 import Home from 'Screens/Home'
 import Faculty from 'Screens/Faculty'
 import Groups from 'Screens/Groups'
+import Lecturers from 'Screens/Lecturers'
 import TimeTable from 'Screens/TimeTable'
+import Favorites from 'Screens/Favorites'
 
 const AppNavigator = createStackNavigator(
   {
@@ -25,8 +27,14 @@ const AppNavigator = createStackNavigator(
     Groups: {
       screen: Groups,
     },
+    Lecturers: {
+      screen: Lecturers,
+    },
     TimeTable: {
       screen: TimeTable,
+    },
+    Favorites: {
+      screen: Favorites,
     },
   },
   {

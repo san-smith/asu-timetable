@@ -49,5 +49,10 @@ export default StyleSheet.create({
     color: 'white',
     fontWeight: '300',
     fontSize: 15,
+  },
+  currentItem: {
+    fontWeight: "bold",
+    fontSize: 20,
+    backgroundColor: '#d7fce1'
   }
 });
