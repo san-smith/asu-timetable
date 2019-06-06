@@ -12,6 +12,7 @@ import Search from 'Components/Search'
 
 interface FacultyProps {
   navigation: NavigationScreenProp<any>,
+  url: string,
 }
 
 interface FacultyState {
@@ -33,7 +34,7 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
   async componentDidMount() {
     try {
       this.setState({inProgress: true})
-      const faculties = await fetchFaculty()
+      const faculties = await fetchFaculty(this.props.navigation.getParam('facultyUrl'))
       this.setState({ faculties: parseFaculty(faculties) })
     } catch (e) {
       Alert.alert('Ошибка', e.message)
@@ -43,7 +44,7 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
   }
 
   goToGroups = (url: string) => {
-    this.props.navigation.navigate('Groups', {url})
+    this.props.navigation.navigate('Groups', {groupUrl: url})
   }
 
   onSearch = (search: string) => {
@@ -77,7 +78,7 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
 
   renderItem = (item: Faculty) => (
     <ListItem
-      onPress={() => this.goToGroups(item.url)}
+      onPress={() => this.goToGroups(`${this.props.navigation.getParam('facultyUrl')}${item.url}`)}
       title={item.name} />
   )
 

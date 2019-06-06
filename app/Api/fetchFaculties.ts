@@ -1,7 +1,5 @@
-import {TIME_TABLE_URL} from 'Consts'
-
-export default function fetchFaculties() {
-    return fetch(TIME_TABLE_URL)
+export default function fetchFaculties(url: string) {
+    return fetch(url)
         .then((data: any) => data.text())
 }
 
