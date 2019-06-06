@@ -8,6 +8,7 @@ export default StyleSheet.create({
     borderColor: '#0b4c90',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 10,
   },
   text: {
     fontSize: 25,

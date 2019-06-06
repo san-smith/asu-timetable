@@ -32,12 +32,9 @@ class Home extends Component<HomeProps> {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}>
         <DatePanel />
-        <StudentsButton onPress={this.goToFaculty}
-        />
-        <LecturersButton onPress={this.goToLecturersFaculty}
-        />
-        <FavoritesButton onPress={this.goToFavorites}
-        />
+        <StudentsButton onPress={this.goToFaculty} />
+        <LecturersButton onPress={this.goToLecturersFaculty} />
+        <FavoritesButton onPress={this.goToFavorites} />
       </ScrollView>
     );
   }
