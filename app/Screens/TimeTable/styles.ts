@@ -29,6 +29,14 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  headerIsCurrentDate: {
+    height: 30,
+    backgroundColor: '#FF9900',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(14, 101, 191, 1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerTitle: {
     color: 'white',
     fontWeight: '300',
@@ -37,4 +45,9 @@ export default StyleSheet.create({
   separator: {
     marginBottom: 5,
   },
+  currentDate: {
+    color: 'white',
+    fontWeight: '300',
+    fontSize: 15,
+  }
 });
