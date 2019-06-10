@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Text, View, TouchableOpacity, FlatList, Alert, SectionList } from 'react-native'
 import groupBy from 'lodash/groupBy'
-import mapKeys from 'lodash/mapKeys'
 import keys from 'lodash/keys'
 import styles from './styles'
 import { NavigationScreenProp } from 'react-navigation'
@@ -12,7 +11,9 @@ import CalendarEvent from 'Types/calendarEvent'
 import Header from 'Components/Header'
 import Loader from 'Components/Loader'
 import moment from 'moment'
-import 'moment/min/moment-with-locales'
+import lessonInProgress from 'Utils/lessonInProgres'
+import isCurrentDate from 'Utils/isCurrentDate'
+import getLocalDay from 'Utils/getLocalDay'
 
 interface TimeTableProps {
   navigation: NavigationScreenProp<any>,
@@ -30,11 +31,6 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
       timeTable: null,
       inProgress: false,
     }
-  }
-  isCurrentDate (date:string): boolean {
-      var currentDate = moment().format('dddd, DD.MM.YYYY');
-      var data = moment(date)
-      return (currentDate === data.format('dddd, DD.MM.YYYY'));
   }
 
   async componentDidMount() {
@@ -80,21 +76,16 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
             renderSectionFooter={this.renderSeparator}
             keyExtractor={this.keyExtractor} />}
       </View>
-    );
-  }
-
-
-  checkCurrentTime(summary: string, startDate: string): boolean {
-    const currentTime = Date.now();
-    const startTime = (new Date(`${startDate}T${summary.split('-')[0]}Z`)).getTime() + (new Date()).getTimezoneOffset()*60000;
-    return currentTime > startTime && currentTime < startTime + 90 * 60 * 1000;
+    )
   }
   
-  renderItem = (item: CalendarEvent) => (
-    <TouchableOpacity style={styles.item}>
-      <Text style={[styles.itemText, this.checkCurrentTime(item.summary, item.startDate) && styles.currentItem]}>{item.summary}</Text>
-    </TouchableOpacity>
-  )
+  renderItem = (item: CalendarEvent) => {
+    return (
+      <TouchableOpacity style={styles.item}>
+        <Text style={[styles.itemText, lessonInProgress(item) && styles.currentItem]}>{item.summary}</Text>
+      </TouchableOpacity>
+    )
+  }
   
 
   renderEmpty = () => (
@@ -104,12 +95,11 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
   )
 
   renderSectionHeader = (title: string) => {
-    const date = moment(title)
-    date.locale('ru')
     return (
-      <View style={[styles.header, this.isCurrentDate(date.toString()) && styles.headerIsCurrentDate]}>
-
-        <Text style={[styles.headerTitle, this.isCurrentDate(date.toString()) && styles.currentDate]}>{date.format('dddd, DD.MM.YYYY')}</Text>
+      <View style={[styles.header, isCurrentDate(title) && styles.headerIsCurrentDate]}>
+        <Text style={[styles.headerTitle, isCurrentDate(title) && styles.currentDate]}>
+          {`${getLocalDay(title)}${moment(title).format(', DD.MM.YYYY')}`}
+        </Text>
       </View>
     )
   }

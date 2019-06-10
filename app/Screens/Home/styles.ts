@@ -25,4 +25,4 @@ export default StyleSheet.create({
     padding: 5,
     borderRadius: 3,
   }
-});
+})

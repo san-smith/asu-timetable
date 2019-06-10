@@ -6,7 +6,7 @@ import {TIME_TABLE_URL, LECTURERS_TIME_TABLE_URL} from 'Consts'
 import styles from './styles'
 import StudentsButton from './components/StudentsButton/'
 import LecturersButton from './components/LecturersButton/'
-import FavoritesButton from './components/FavoritesButton/';
+import FavoritesButton from './components/FavoritesButton/'
 
 interface HomeProps {
   navigation: NavigationScreenProp<any>,
@@ -36,7 +36,7 @@ class Home extends Component<HomeProps> {
         <LecturersButton onPress={this.goToLecturersFaculty} />
         <FavoritesButton onPress={this.goToFavorites} />
       </ScrollView>
-    );
+    )
   }
 }
 
