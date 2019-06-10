@@ -71,9 +71,10 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
           renderItem={(item) => this.renderItem(item.item)}
           keyExtractor={this.keyExtractor}
           ListEmptyComponent={this.renderEmpty()}
+          keyboardShouldPersistTaps='handled'
         />}
       </View>
-    );
+    )
   }
 
   renderItem = (item: Faculty) => (
