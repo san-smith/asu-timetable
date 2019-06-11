@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Text, View, TouchableOpacity, FlatList, Alert } from 'react-native'
+import {Text, View, FlatList, Alert } from 'react-native'
 import fetchFaculty from 'Api/fetchFaculties'
 import parseFaculty from 'Utils/parseFaculty'
 import styles from './styles'
@@ -52,7 +52,7 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
   }
 
   getFaculties(): Array<Faculty> {
-    const {search, faculties} = this.state
+    const { search, faculties } = this.state
     if (!faculties) return []
     return faculties.filter(faculty => faculty.name.includes(search))
   }

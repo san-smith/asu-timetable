@@ -35,7 +35,7 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
   async componentDidMount() {
     try {
       const url = this.props.navigation.getParam('groupUrl')
-      this.setState({inProgress: true})
+      this.setState({ inProgress: true })
       const groups = await fetchGroups(url)
       this.setState({ groups: parseGroup(groups) })
     } catch (e) {
@@ -56,11 +56,11 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
   }
 
   onSearch = (search: string) => {
-    this.setState({search})
+    this.setState({ search })
   }
 
   getGroups(): Array<Group> {
-    const {search, groups} = this.state
+    const { search, groups } = this.state
     if (!groups) return []
     return groups.filter(group => group.name.includes(search))
   }

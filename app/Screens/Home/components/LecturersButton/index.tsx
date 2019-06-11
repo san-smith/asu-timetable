@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {Text, View, TouchableOpacity, ScrollView} from 'react-native'
+import {Text, TouchableOpacity} from 'react-native'
 
 import styles from './styles'
 
@@ -14,7 +14,7 @@ class LecturersButton extends PureComponent<LecturersButtonProps> {
         style={styles.container}>
           <Text style={styles.text}>Расписание преподавателей</Text>
       </TouchableOpacity>
-    );
+    )
   }
 }
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Text, View, TouchableOpacity, FlatList, Alert, SectionList } from 'react-native'
+import {Text, View, TouchableOpacity, Alert, SectionList } from 'react-native'
 import groupBy from 'lodash/groupBy'
 import keys from 'lodash/keys'
 import styles from './styles'

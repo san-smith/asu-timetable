@@ -8,7 +8,7 @@
  * @format
  */
 
-import { createStackNavigator, createAppContainer } from "react-navigation"
+import { createStackNavigator, createAppContainer } from 'react-navigation'
 import Home from 'Screens/Home'
 import Faculty from 'Screens/Faculty'
 import Groups from 'Screens/Groups'

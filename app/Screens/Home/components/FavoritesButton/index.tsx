@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {Text, View, TouchableOpacity, ScrollView} from 'react-native'
+import {Text, TouchableOpacity} from 'react-native'
 
 import styles from './styles'
 

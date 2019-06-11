@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Text, View, TouchableOpacity, ScrollView} from 'react-native'
+import { ScrollView } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
 import DatePanel from 'Components/DatePanel'
 import {TIME_TABLE_URL, LECTURERS_TIME_TABLE_URL} from 'Consts'
