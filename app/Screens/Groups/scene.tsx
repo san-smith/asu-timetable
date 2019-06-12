@@ -66,10 +66,11 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
   }
 
   render() {
+    console.log(this.props.navigation.getParam('groupUrl'))
     return (
       <View style={styles.container}>
         <Header navigation={this.props.navigation}
-        title={ this.props.navigation.getParam('groupUrl').indexOf('students') !== -1 ? 'Группы' : 'Кафедры' } />
+        title={ this.props.navigation.getParam('groupUrl').includes('students') ? 'Группы' : 'Кафедры' } />
         <Search onTextChange={this.onSearch} />
 
         {this.state.inProgress
