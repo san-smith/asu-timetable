@@ -1,4 +1,5 @@
-export default function fetchTimeTable(facultyUrl: string, groupUrl: string) {
-  return fetch(`${facultyUrl}${groupUrl}?file=${groupUrl.slice(0, groupUrl.length-2)}.ics`)
+
+export default function fetchTimeTable(baseUrl: string, endpoint: string) {
+  return fetch(`${baseUrl}${endpoint}?file=${endpoint.slice(0, endpoint.length-2)}.ics`)
   .then((data: any) => data.text())
 }

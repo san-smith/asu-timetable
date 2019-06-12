@@ -1,7 +1,7 @@
 import HomeScene from './scene'
 import { connect } from 'react-redux'
 
-import { setUrl } from 'Store/Url/actions'
+import { setUrl, setUrlType } from 'Store/Url/actions'
 
 function mapStateToProps (state: any) {
   return {
@@ -11,6 +11,7 @@ function mapStateToProps (state: any) {
 
 const actions = {
   setUrl,
+  setUrlType,
 }
 
 export default connect(mapStateToProps, actions)(HomeScene)

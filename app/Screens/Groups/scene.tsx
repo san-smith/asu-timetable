@@ -14,6 +14,8 @@ import { Favorite } from 'Types/favorite'
 
 interface GroupsProps {
   navigation: NavigationScreenProp<any>,
+  url: string,
+  type: string,
 }
 
 interface GroupsState {
@@ -34,25 +36,24 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
 
   async componentDidMount() {
     try {
-      const url = this.props.navigation.getParam('groupUrl')
+      const url = this.props.url
       this.setState({ inProgress: true })
       const groups = await fetchGroups(url)
       this.setState({ groups: parseGroup(groups) })
     } catch (e) {
       Alert.alert('Ошибка', e.message)
     } finally {
-      this.setState({inProgress: false})
+      this.setState({ inProgress: false })
     }    
   }
 
   goToTimeTable = (groupUrl: string) => {
-    const facultyUrl = this.props.navigation.getParam('groupUrl')
-    this.props.navigation.navigate('TimeTable', {facultyUrl, groupUrl})
+    const baseUrl = this.props.url
+    this.props.navigation.navigate('TimeTable', { baseUrl, endpoint: groupUrl})
   }
 
   goToLecturers = (departmentUrl: string) => {
-    const facultyUrl = this.props.navigation.getParam('groupUrl')
-    this.props.navigation.navigate('Lecturers', {facultyUrl, departmentUrl})
+    this.props.navigation.navigate('Lecturers', { departmentUrl })
   }
 
   onSearch = (search: string) => {
@@ -65,12 +66,21 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
     return groups.filter(group => group.name.includes(search))
   }
 
+  onItemPress = (url: string) => {
+    const { type } = this.props
+    if (type === 'students') {
+      this.goToTimeTable(url)
+    } else {
+      this.goToLecturers(url)
+    }
+  }
+
   render() {
-    console.log(this.props.navigation.getParam('groupUrl'))
     return (
       <View style={styles.container}>
-        <Header navigation={this.props.navigation}
-        title={ this.props.navigation.getParam('groupUrl').includes('students') ? 'Группы' : 'Кафедры' } />
+        <Header
+          navigation={this.props.navigation}
+          title={this.props.type === 'students' ? 'Группы' : 'Кафедры' } />
         <Search onTextChange={this.onSearch} />
 
         {this.state.inProgress
@@ -88,32 +98,22 @@ class GroupsScreen extends Component<GroupsProps, GroupsState> {
     )
   }
 
-  renderItem = (item: Group) => (
-    this.props.navigation.getParam('groupUrl').indexOf('students') === -1
-    ? <ListItem
-        onPress={() => this.props.navigation.getParam('groupUrl').indexOf('students') !== -1 ? this.goToTimeTable(item.url) : this.goToLecturers(item.url)}
+  renderItem = (item: Group) => {
+    return (
+      <ListItem
+        onPress={() => this.onItemPress(item.url)}
         title={item.name} />
-    : <ListItemWithFavorite
-    onPress={() => this.props.navigation.getParam('groupUrl').indexOf('students') !== -1 ? this.goToTimeTable(item.url) : this.goToLecturers(item.url)}
-    onPressFavorite={async () => {
-      const favoriteStore: Favorite[] = JSON.parse(await AsyncStorage.getItem(`FavoriteStore`) || '[]')
-      if (favoriteStore.find(x => x.favoriteName === item.name) === undefined) {
-        favoriteStore.push({
-          facultyUrl: this.props.navigation.getParam('groupUrl'),
-          groupUrl: item.url,
-          favoriteName: item.name,
-        })
-        await AsyncStorage.setItem(`FavoriteStore`, JSON.stringify(favoriteStore))
-      }
-    }}
-    title={item.name} />
-  )
+    )
+  }
 
-  renderEmpty = () => (
-    <View style={styles.emptyList}>
-      <Text style={styles.itemText}>Список факультетов пока пуст</Text>
-    </View>
-  )
+  renderEmpty = () => {
+    const { type } = this.props
+    return (
+      <View style={styles.emptyList}>
+        <Text style={styles.itemText}>Список {type === 'students' ? 'групп' : 'кафедр'} пока пуст</Text>
+      </View>
+    )
+  }
 
   keyExtractor = (item: Group) => item.url
 }

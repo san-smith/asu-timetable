@@ -17,6 +17,8 @@ import getLocalDay from 'Utils/getLocalDay'
 
 interface TimeTableProps {
   navigation: NavigationScreenProp<any>,
+  baseUrl: string,
+  endpoint: string,
 }
 
 interface TimeTableState {
@@ -34,19 +36,18 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
   }
 
   async componentDidMount() {
+    const { baseUrl, endpoint } = this.props
     try {
-      this.setState({inProgress: true})
-      const facultyUrl = this.props.navigation.getParam('facultyUrl')
-      const groupUrl = this.props.navigation.getParam('groupUrl')
-      const data = await fetchTimeTable(facultyUrl, groupUrl)
+      this.setState({ inProgress: true })
+      const data = await fetchTimeTable(baseUrl, endpoint)
       const parsed = parseTimeTable(data)
       const timeTable = parsed.events.map((event: any) => normalizeCalendarEvent(event))
-      this.setState({timeTable})
+      this.setState({ timeTable })
     // console.log(timeTable)
     } catch (e) {
       Alert.alert('Ошибка', e.message)
     } finally {
-      this.setState({inProgress: false})
+      this.setState({ inProgress: false })
     } 
   }
 
