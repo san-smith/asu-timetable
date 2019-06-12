@@ -10,14 +10,17 @@ import FavoritesButton from './components/FavoritesButton/'
 
 interface HomeProps {
   navigation: NavigationScreenProp<any>,
+  setUrl: (url: string) => void,
 }
 class Home extends Component<HomeProps> {
 
   goToFaculty = () => {
+    this.props.setUrl(TIME_TABLE_URL)
     this.props.navigation.navigate('Faculty', { facultyUrl: TIME_TABLE_URL })
   }
 
   goToLecturersFaculty = () => {
+    this.props.setUrl(LECTURERS_TIME_TABLE_URL)
     this.props.navigation.navigate('Faculty', { facultyUrl: LECTURERS_TIME_TABLE_URL })
   }
   

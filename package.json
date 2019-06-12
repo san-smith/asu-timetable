@@ -32,6 +32,7 @@
     "jest": "^24.7.1",
     "metro-react-native-babel-preset": "^0.53.1",
     "react-test-renderer": "16.8.3",
+    "redux-devtools-extension": "^2.13.8",
     "tslint": "^5.16.0",
     "typescript": "^3.4.4"
   },
