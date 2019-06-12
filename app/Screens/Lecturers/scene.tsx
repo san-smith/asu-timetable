@@ -12,6 +12,8 @@ import Search from 'Components/Search'
 
 interface LecturersProps {
   navigation: NavigationScreenProp<any>,
+  url: string,
+  departmentUrl: string,
 }
 
 interface LecturersState {
@@ -32,7 +34,7 @@ class LecturersScreen extends Component<LecturersProps, LecturersState> {
 
   async componentDidMount() {
     try {
-      const url = `${this.props.navigation.getParam('facultyUrl')}${this.props.navigation.getParam('departmentUrl')}`
+      const url = `${this.props.url}${this.props.departmentUrl}`
       this.setState({inProgress: true})
       const lecturers = await fetchLecturers(url)
       this.setState({ lecturers: parseLecturer(lecturers) })
@@ -44,8 +46,9 @@ class LecturersScreen extends Component<LecturersProps, LecturersState> {
   }
 
   goToTimeTable = (lecturerUrl: string) => {
-    const facultyUrl = `${this.props.navigation.getParam('facultyUrl')}${this.props.navigation.getParam('departmentUrl')}`
-    this.props.navigation.navigate('TimeTable', {facultyUrl, groupUrl: lecturerUrl})
+    const { url, departmentUrl } = this.props
+    const baseUrl = `${url}${departmentUrl}`
+    this.props.navigation.navigate('TimeTable', { baseUrl, endpoint: lecturerUrl })
   }
 
   onSearch = (search: string) => {

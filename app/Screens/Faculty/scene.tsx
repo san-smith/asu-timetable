@@ -9,10 +9,13 @@ import Header from 'Components/Header'
 import ListItem from 'Components/ListItem'
 import Loader from 'Components/Loader'
 import Search from 'Components/Search'
+import {STUDENTS_TIME_TABLE_URL, LECTURERS_TIME_TABLE_URL} from 'Consts'
 
 interface FacultyProps {
   navigation: NavigationScreenProp<any>,
   url: string,
+  type: string,
+  setUrl: (url: string) => void,
 }
 
 interface FacultyState {
@@ -33,22 +36,23 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
 
   async componentDidMount() {
     try {
-      this.setState({inProgress: true})
-      const faculties = await fetchFaculty(this.props.navigation.getParam('facultyUrl'))
+      this.setState({ inProgress: true })
+      const faculties = await fetchFaculty(this.props.url)
       this.setState({ faculties: parseFaculty(faculties) })
     } catch (e) {
       Alert.alert('Ошибка', e.message)
     } finally {
-      this.setState({inProgress: false})
+      this.setState({ inProgress: false })
     }    
   }
 
   goToGroups = (url: string) => {
-    this.props.navigation.navigate('Groups', {groupUrl: url})
+    this.props.setUrl(url)
+    this.props.navigation.navigate('Groups', { groupUrl: url })
   }
 
   onSearch = (search: string) => {
-    this.setState({search})
+    this.setState({ search })
   }
 
   getFaculties(): Array<Faculty> {
@@ -77,11 +81,16 @@ class FacultyScreen extends Component<FacultyProps, FacultyState> {
     )
   }
 
-  renderItem = (item: Faculty) => (
-    <ListItem
-      onPress={() => this.goToGroups(`${this.props.navigation.getParam('facultyUrl')}${item.url}`)}
-      title={item.name} />
-  )
+  renderItem = (item: Faculty) => {
+    const url = this.props.type === 'students'
+      ? `${STUDENTS_TIME_TABLE_URL}${item.url}`
+      : `${LECTURERS_TIME_TABLE_URL}${item.url}`
+    return (
+      <ListItem
+        onPress={() => this.goToGroups(url)}
+        title={item.name} />
+    )
+  }
 
   renderEmpty = () => (
     <View style={styles.emptyList}>
