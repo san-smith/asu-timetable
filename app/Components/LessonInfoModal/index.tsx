@@ -16,6 +16,7 @@ class LessonInfoModal extends PureComponent<LessonInfoModalProps> {
 
   render() {
     const { event, onPress, visible } = this.props
+    console.log(event)
     return (
       <Modal visible={visible} >
         <View style={styles.container} >
@@ -25,7 +26,7 @@ class LessonInfoModal extends PureComponent<LessonInfoModalProps> {
 
           <View style={styles.content}>
             <Row title='Дата:' text={moment(event.startTime).format('DD.MM.YYYY')} />
-            <Row title='Время:' text={moment(event.startTime).add(7, 'hours').format('HH:mm')} />
+            <Row title='Время:' text={moment(event.startTime).format('HH:mm')} />
             <Row title='Преподаватель:' text={event.professor} />
             <Row title='Аудитория:' text={event.location} />
             <Row title='Общая информация:' text={event.summary} />
