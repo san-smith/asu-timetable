@@ -40,7 +40,7 @@ class Home extends Component<HomeProps> {
         <DatePanel />
         <StudentsButton onPress={this.goToFaculty} />
         <LecturersButton onPress={this.goToLecturersFaculty} />
-        <FavoritesButton onPress={this.goToFavorites} />
+        {/* <FavoritesButton onPress={this.goToFavorites} /> */}
       </ScrollView>
     )
   }

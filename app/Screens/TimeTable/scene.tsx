@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Text, View, TouchableOpacity, Alert, SectionList } from 'react-native'
+import { Text, View, TouchableOpacity, Alert, SectionList } from 'react-native'
 import groupBy from 'lodash/groupBy'
 import keys from 'lodash/keys'
 import styles from './styles'
@@ -14,6 +14,7 @@ import moment from 'moment'
 import lessonInProgress from 'Utils/lessonInProgres'
 import isCurrentDate from 'Utils/isCurrentDate'
 import getLocalDay from 'Utils/getLocalDay'
+import LessonInfoModal from 'Components/LessonInfoModal'
 
 interface TimeTableProps {
   navigation: NavigationScreenProp<any>,
@@ -24,6 +25,7 @@ interface TimeTableProps {
 interface TimeTableState {
   timeTable: Array<CalendarEvent> | null,
   inProgress: boolean,
+  event: CalendarEvent | null,
 }
 
 class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
@@ -32,6 +34,7 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
     this.state = {
       timeTable: null,
       inProgress: false,
+      event: null,
     }
   }
 
@@ -61,7 +64,16 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
     }))
   }
 
+  onItemPress = (event: CalendarEvent) => {
+    this.setState({ event })
+  }
+
+  onClosePress = () => {
+    this.setState({ event: null })
+  }
+
   render() {
+    const { event } = this.state
     return (
       <View style={styles.container}>
         <Header navigation={this.props.navigation}
@@ -76,13 +88,17 @@ class TimeTableScreen extends Component<TimeTableProps, TimeTableState> {
             ListEmptyComponent={this.renderEmpty()}
             renderSectionFooter={this.renderSeparator}
             keyExtractor={this.keyExtractor} />}
+        {event && <LessonInfoModal
+          visible={!!event}
+          onPress={this.onClosePress}
+          event={event} />}
       </View>
     )
   }
   
   renderItem = (item: CalendarEvent) => {
     return (
-      <TouchableOpacity style={styles.item}>
+      <TouchableOpacity style={styles.item} onPress={() => this.onItemPress(item)}>
         <Text style={[styles.itemText, lessonInProgress(item) && styles.currentItem]}>{item.summary}</Text>
       </TouchableOpacity>
     )
