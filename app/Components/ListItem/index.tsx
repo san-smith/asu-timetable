@@ -1,26 +1,24 @@
-import React, {Component, ReactNode} from 'react'
-import {Text, View, TouchableOpacity, FlatList } from 'react-native'
+import React, { Component } from 'react'
+import { Text, TouchableOpacity } from 'react-native'
 
 import styles from './styles'
 
-interface HeaderProps {
+interface ListItemProps {
   title: string,
   onPress: () => void,
 }
 
-class Header extends Component<HeaderProps> {
+class ListItem extends Component<ListItemProps> {
 
   render() {
-    const {title, onPress} = this.props
+    const { title, onPress } = this.props
     return (
       <TouchableOpacity style={styles.container}
         onPress={onPress}>
         <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>
-    );
+    )
   }
-
-
 }
 
-export default Header
+export default ListItem
