@@ -11,7 +11,7 @@
     "@types/moment-timezone": "^0.5.12",
     "@types/react-redux": "^7.0.8",
     "cal-parser": "^1.0.0-b2",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.25",
     "react": "16.8.3",
