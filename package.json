@@ -12,7 +12,7 @@
     "@types/react-redux": "^7.0.8",
     "cal-parser": "^1.0.0-b2",
     "lodash": "^4.17.13",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.25",
     "react": "16.8.3",
     "react-native": "0.59.5",
